@@ -36,10 +36,34 @@ const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 const plugins = [
   `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
+  `medusa-summary-plugin`,
   {
     resolve: `@medusajs/file-local`,
     options: {
       upload_dir: "uploads",
+    },
+  },
+  {
+    resolve: `medusa-plugin-restock-notification`,
+    options: {
+      trigger_delay: 5000, // optional, delay time in milliseconds
+      inventory_required: 10, // minimum inventory quantity to consider a variant as restocked
+    },
+  },
+  {
+    resolve: "medusa-plugin-variant-images",
+    options: {
+      enableUI: true,
+    },
+  },
+  {
+    resolve: "medusa-file-r2",
+    options: {
+      account_id: process.env.R2_ACCOUNT_ID,
+      access_key: process.env.R2_ACCESS_KEY,
+      secret_key: process.env.R2_SECRET_KEY,
+      bucket: process.env.R2_BUCKET_NAME,
+      public_url: process.env.R2_PUBLIC_URL,
     },
   },
   {
